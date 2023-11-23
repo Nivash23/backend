@@ -11,27 +11,29 @@ mongoose.connect(url)
     .catch((e) => {
         console.error(e);
     })
-const Notes = [{
-    id: 1,
-    content: "this is a story book"
-},
-{
-    id: 2,
-    content: "this is movie"
-}
-];
-// const noteSchema = new mongoose.Schema({
-//     id: Number,
-//     Name: String
-// });
-// const Note = mongoose.model('Note',noteSchema,'notes');
+// const Notes = [{
+//     id: 1,
+//     content: "this is a story book"
+// },
+// {
+//     id: 2,
+//     content: "this is movie"
+// }
+// ];
+const noteSchema = new mongoose.Schema({
+    id: Number,
+    Name: String
+});
+const Note = mongoose.model('Note',noteSchema,'notes');
 
 const PORT = 3001;
 const HOSTNAME = '127.0.0.1';
-app.get('/', (req, res) => {
-    res.statusCode = 200;
-    res.send(JSON.stringify(Notes));
+app.get('/api/notes', (req, res) => {
+    Note.find({}, {})
+        .then(notes => {
+            res.status(200).json(notes);
+    })
 });
 app.listen(PORT, () => {
-    console.log(`Server Running at https://${HOSTNAME}:${PORT}`);
+    console.log(`Server Running at http://${HOSTNAME}:${PORT}`);
 })
