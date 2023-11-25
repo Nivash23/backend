@@ -1,10 +1,11 @@
 const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
+const { MONGODB_URI, PORT } = require('./utils/config');
 
-const url = `mongodb+srv://billanivash52:Nivashdb32@nivashclust.83ce4ig.mongodb.net/B51DB`;
+app.use(express.json());
 
-mongoose.connect(url)
+mongoose.connect(MONGODB_URI)
     .then(() => {
         console.log('Connected sucessfull...');
     })
@@ -26,7 +27,6 @@ const noteSchema = new mongoose.Schema({
 });
 const Note = mongoose.model('Note',noteSchema,'notes');
 
-const PORT = 3001;
 const HOSTNAME = '127.0.0.1';
 app.get('/api/notes', (req, res) => {
     Note.find({}, {})
@@ -34,6 +34,17 @@ app.get('/api/notes', (req, res) => {
             res.status(200).json(notes);
     })
 });
+app.post('/api/notes/:id', (req, res) => {
+    const id = req.params.id;
+    const note = Note.findOne(Note.id==id);
+
+    if (note)
+    {
+        res.status(200).json(note);
+        console.log(note);
+        }
+})
 app.listen(PORT, () => {
     console.log(`Server Running at http://${HOSTNAME}:${PORT}`);
 })
+
