@@ -1,7 +1,13 @@
 const express = require('express');
+const cors = require('cors');
+const userRouter = require('./Controllers/users');
 const app = express();
 
 app.use(express.json());
+
+app.use(cors());
+
+app.use('/api/users', userRouter);
 
 
 // const Notes = [{
@@ -18,8 +24,6 @@ app.use(express.json());
 //     Name: String
 // });
 // const Note = mongoose.model('Note',noteSchema,'notes');
-
-const HOSTNAME = '127.0.0.1';
 // app.get('/api/notes', (req, res) => {
 //     Note.find({}, {})
 //         .then(notes => {
